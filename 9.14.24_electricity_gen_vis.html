@@ -1,0 +1,177 @@
+<meta charset="utf-8">
+<!-- Basic security -->
+<meta http-equiv="Content-Security-Policy" content="script-src 'self' https://d3js.org; style-src 'self'"> 
+
+<head>
+  <!-- Load d3.js -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <!-- CSS -->
+  <link rel="stylesheet" href="9.14.24_electricity_gen_vis.css">
+  <!-- Adjust mobile display -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+  <div id = "title">
+    <text id = "title-text" class = "titles"> </text>
+  </div>
+  <div id = "elec-gen-vis-state">
+    <svg id = "elec-gen-vis-state-tree"></svg>
+  </div>
+  <div id = "elec-gen-input-output-legend">
+    <div id = "elec-gen-input-output"> 
+      <div id = "state-select">
+        <label class = "subtitles" for="state-select-drop">State:
+        <select name="state-select-drop" id="state-select-drop" disabled></select></label>
+      </div>
+      <div id = "year-select">
+        <label class = "subtitles" for="year-select-drop">Year:
+        <select name="year-select-drop" id="year-select-drop" disabled></select></label>
+      </div>
+      <br/>
+
+      <div id = "display-vars">
+        <details>
+          <summary class = "subtitles" > Display Variables: </summary>
+          <fieldset>
+
+            <div id = "GWh-or-GW">
+              <label for="GWH-or-GW-drop" class = "subtitles" >Units:
+              <select name = "GWh-or-GW-drop" id = "GWh-or-GW-drop" disabled>
+                <option value = "GWh" selected>GWh</option>
+                <option value = "GW">GW</option>
+              </select></label>
+            </div>
+
+            <div id = "capacity-restrictions">
+              <label for="capacity-restrictions-drop" class = "subtitles" >Capacity:
+              <select name = "capacity-restrictions-drop" id = "capacity-restrictions-drop" disabled>
+                <option value = "open">Open</option>
+                <option value = "reference">Reference</option>
+                <option value = "limited" selected>Limited</option>
+              </select></label>
+            </div>
+            <br/>
+            
+            <div id = "select-clean-elec">
+              <text class = "subtitles" > Is It Clean? </text>
+              <ul>
+                <li> 
+                  <input type = "checkbox" id = "wind-clean-checkbox" value = "windElecGen" checked disabled></input>
+                  <label for = "wnd-clean-checkbox"> Wind </label>
+                </li>
+                <li> 
+                  <input type = "checkbox" id = "sun-clean-checkbox" value = "solarsElecGen" checked disabled></input>
+                  <label for = "sun-clean-checkbox"> Solar (PV & Thermal) </label>
+                </li>
+                <li> 
+                  <input type = "checkbox" id = "geo-clean-checkbox" value = "geothermElecGen" checked disabled></input>
+                  <label for = "geo-clean-checkbox"> Geothermal </label>
+                </li>
+                <li> 
+                  <input type = "checkbox" class = "controversial" id = "nuc-clean-checkbox" value = "nuclearElecGen" checked disabled></input>
+                  <label for = "nuc-clean-checkbox"> Nuclear </label>
+                </li>
+                <li> 
+                  <input type = "checkbox" class = "controversial" id = "hydro-clean-checkbox" value = "hydroElecGen" checked disabled></input>
+                  <label for = "hydro-clean-checkbox"> Hydroelectric (Conventional & Pumped Storage) </label>
+                </li>
+                <li> 
+                  <input type = "checkbox" class = "controversial" id = "bio-clean-checkbox" value = "bmassElecGen" checked disabled></input>
+                  <label for = "bio-clean-checkbox"> Biomass </label>
+                </li>
+              </ul>
+            </div>
+          </fieldset>
+        </details>
+      </div>
+
+      <div id = "elec-gen-outputs">
+        <br/>
+        <text id = "year-label" class = "titles"> </text> <br/>
+        <br/>
+
+        <text class = "subtitles" > Generated: </text> 
+        <table>
+          <tr>
+            <th> </th>
+            <th class = "elec-gen-output-state state-label"></th>
+            <th> US </th>
+          </tr>
+          <tr>
+            <th> Total </th>
+            <td class = "elec-gen-output-state" id = "total-elec-gen-state"></td>
+            <td id = "total-elec-gen-us"></td>
+          </tr>
+          <tr>
+            <th> Clean </th>
+            <td class = "elec-gen-output-state" id = "clean-elec-gen-state"></td>
+            <td id = "clean-elec-gen-us"></td>
+          </tr>
+          <tr>
+            <th> Clean % </th>
+            <td class = "elec-gen-output-state" id = "clean-elec-percent-state"></td>
+            <td id = "clean-elec-percent-us"></td>
+          </tr>
+        </table>
+
+        <text class = "mini elec-gen-output-state" id = "import-state"></text><br class = "elec-gen-output-state"/>
+        <text class = "mini" id = "import-us"></text><br/>
+
+        <br/>
+        <text class = "subtitles" > How Much Wind & Solar Can Be Built? </text> 
+        <table>
+          <tr>
+            <th> </th>
+            <th class = "elec-gen-output-state state-label"> </th>
+            <th> US </th>
+          </tr>
+          <tr>
+            <th> Solar </th>
+            <td class = "elec-gen-output-state" id = "capacity-solar-state"> </td>
+            <td id = "capacity-solar-us"> </td>
+          </tr>
+          <tr>
+            <th> Wind </th>
+            <td class = "elec-gen-output-state" id = "capacity-wind-state"> </td>
+            <td id = "capacity-wind-us"> </td>
+          </tr>
+          <tr>
+            <th> %* </th>
+            <td class = "elec-gen-output-state" id = "capacity-percent-state"> </td>
+            <td id = "capacity-percent-us"> </td>
+          </tr>
+        </table>
+        <text class = "mini" id = "capacity-offshore-wind-us"> </text><br/>
+        <text class = "mini"> *of generation </text>
+      </div>
+    </div>
+
+    <div id = "elec-gen-legend"> 
+      <svg id = "elec-gen-vis-state-legend"></svg>
+    </div>
+  </div>
+
+  <div id = "tooltip">
+    <text class = "subtitles" id = "tooltip-subpart-name"></text> <br/>
+    <br/>
+    <text id = "tooltip-total"></text> <br/>
+    <text id = "tooltip-percent"></text> <br/>
+    <text id = "tooltip-percent-clean-nclean"></text> <br/>
+    <br/>
+    <text id = "tooltip-percent-of-us"></text>
+  </div>
+
+  <div id = "links">
+    <a href = https://d3js.org class = "mini"> D3 </a>
+    <br/>
+    <a href = https://www.eia.gov/electricity/data/browser/ class = "mini"> EIA Electricity Generation Data </a>
+    <br/>
+    <a href = https://www.nrel.gov/gis/solar-supply-curves.html class = "mini" id = "nrel-link"> </a>
+    <br/>
+    <a href = https://climatefalsesolutions.org/ class = "mini"> False Solutions </a>
+  </div>
+    
+
+  <script src="9.14.24_electricity_gen_vis.js"></script>
+</body>
