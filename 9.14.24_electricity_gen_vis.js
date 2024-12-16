@@ -32,7 +32,7 @@
 
 // ---These should be changed to someone else's EIA API key & directory root (for local files) once I'm not involved with the project: ---
 // (key obtainable on EIA site):
-let eiaKey = "QL5ASXTSN9ccXzVu4Ly6UKwc0Fkj4AyKuDVs1dEX";
+let eiaKey = ""; // NOTE: key redacted for Github posting
 let directoryRoot = ""; // if this is blank, doesn't seem to trigger CORS due to same origin: 
 // if using full root name, may need to update server CORS policy to allow
 
