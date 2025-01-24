@@ -9,6 +9,8 @@ Avenues for improvement if creating a larger scale project include:
 - Better adjustment of CSS to each user's view window size
 - Obfuscating JavaScript visibility in Inspect Element on hosting site
 
+Currently in progress: the next part of the project, visualizing EIA breakdown of electric sector & primary energy use by sector, with corresponding CO2 emissions and more.
+
 ![image](https://github.com/user-attachments/assets/793b9186-47a2-45d3-a967-5c9e6ea06985)
 
 ![image](https://github.com/user-attachments/assets/3dfed353-8961-4d95-af09-c2a0a7f7daf4)
