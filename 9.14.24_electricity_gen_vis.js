@@ -950,7 +950,7 @@ function isolateElecGenOrZero(subsetFull) {
     }
   }
 
-  if(foundYearIndex !== null && subsetResponse[foundYearIndex].generation !== undefined) {
+  if(foundYearIndex !== null && subsetResponse[foundYearIndex].generation !== undefined && !isNaN(parseFloat(subsetResponse[foundYearIndex].generation)) {
     return parseFloat(subsetResponse[foundYearIndex].generation);
   } else {
     return 0;
@@ -994,7 +994,9 @@ async function pullImportElecData(location) {
   }
 
   let importElecReturn = null;
-  if(foundCountryYearIndex !== null && foundStateYearIndex !== null) { 
+  if(foundCountryYearIndex !== null && foundStateYearIndex !== null
+	&& !isNaN(parseFloat(importElecCountryFull.response.data[foundCountryYearIndex].value))
+    	&& !isNaN(parseFloat(importElecStateFull.response.data[foundStateYearIndex].value))) { 
     // Import/export data will be unavailable for some years, store as null itc
     importElecReturn = parseFloat(importElecCountryFull.response.data[foundCountryYearIndex].value) + 
                          parseFloat(importElecStateFull.response.data[foundStateYearIndex].value); // if US, the state one will be 0
